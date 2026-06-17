@@ -1,8 +1,8 @@
 import React from 'react';
-import { useConfigLoader } from '../../shared/utils/configLoader';
-import { BaseLayout } from '../../shared/components/BaseLayout';
-import { Section } from '../../shared/components/Section';
-import { themeTokens } from '../../shared/theme';
+import { useConfigLoader } from '../everletter/shared/utils/configLoader';
+import { BaseLayout } from '../everletter/shared/components/BaseLayout';
+import { Section } from '../everletter/shared/components/Section';
+import { themeTokens } from '../everletter/shared/theme';
 import { motion } from 'framer-motion';
 
 /**
@@ -66,8 +66,8 @@ export default function LoveLetterScroll() {
           <Section className="mb-12">
             <h2 className="text-2xl font-semibold mb-6">Moments Together</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {config.photos.map((photo, index) => (
-                <motion.key
+              {config.photos.map((photo: string, index: number) => (
+                <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -80,7 +80,7 @@ export default function LoveLetterScroll() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                </motion.key>
+                </motion.div>
               ))}
             </div>
           </Section>
