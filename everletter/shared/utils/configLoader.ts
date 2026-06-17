@@ -11,7 +11,7 @@ export function useConfigLoader<T = any>(configPath: string) {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    async loadConfig() {
+    async function loadConfig() {
       try {
         setLoading(true);
         const response = await fetch(configPath);
