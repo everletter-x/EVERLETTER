@@ -1,0 +1,6 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "commit_message": {
+    "prompt": "act as CTO, self devined and self prompting"
+  }
+}
