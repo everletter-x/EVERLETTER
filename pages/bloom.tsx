@@ -5,8 +5,15 @@ import { BaseLayout, GlassCard } from '../everletter/shared/components/BaseLayou
 import { Section } from '../everletter/shared/components/Section';
 import { useConfigLoader } from '../everletter/shared/utils/configLoader';
 import { PetalsEffect } from '../everletter/shared/components/Effects';
+import { MusicPlayer } from '../everletter/shared/components/MusicPlayer';
 
 type Phase = 'loading' | 'countdown' | 'reveal';
+
+const defaultFlowers = [
+  { flower: 'Mawar', meaning: 'Cinta yang tulus dan abadi', emoji: '🌹' },
+  { flower: 'Tulip', meaning: 'Kebahagiaan sempurna', emoji: '🌷' },
+  { flower: 'Lavender', meaning: 'Ketenangan dan kedamaian', emoji: '💜' },
+];
 
 export default function BloomPage() {
   const { config, loading, error } = useConfigLoader('/config.json');
@@ -44,12 +51,19 @@ export default function BloomPage() {
     'Senyummu itu obat buat semua capekku.',
     'Bersamamu, aku jadi versi terbaik dari diriku.',
   ];
+  const flowers = config.flowers || defaultFlowers;
 
   return (
     <BaseLayout variant="premium">
       <Head>
         <title>Untuk {config.recipient} — dari {config.sender}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
+      {/* Music player */}
+      {config.music && (
+        <MusicPlayer src={`/music/${config.music}`} title={config.musicTitle || 'Now Playing'} variant="premium" />
+      )}
 
       <AnimatePresence mode="wait">
         {/* ── Loading Phase ── */}
@@ -197,15 +211,11 @@ export default function BloomPage() {
               </div>
             </Section>
 
-            {/* Flowers Meaning */}
+            {/* Flowers Meaning - Config Driven */}
             <Section variant="premium" title="Arti Bunga untukmu">
               <GlassCard className="p-8 sm:p-10" intensity="strong">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                  {[
-                    { flower: 'Mawar', meaning: 'Cinta yang tulus dan abadi', emoji: '🌹' },
-                    { flower: 'Tulip', meaning: 'Kebahagiaan sempurna', emoji: '🌷' },
-                    { flower: 'Lavender', meaning: 'Ketenangan dan kedamaian', emoji: '💜' },
-                  ].map((f, i) => (
+                  {flowers.map((f, i) => (
                     <GlassCard key={i} delay={i * 0.1} className="p-5 text-center" intensity="subtle">
                       <span className="text-3xl">{f.emoji}</span>
                       <p className="mt-3 text-elegant-white font-medium text-sm">{f.flower}</p>

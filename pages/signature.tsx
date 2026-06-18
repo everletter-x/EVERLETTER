@@ -7,6 +7,13 @@ import { useConfigLoader } from '../everletter/shared/utils/configLoader';
 import { MusicPlayer } from '../everletter/shared/components/MusicPlayer';
 import { StarfieldEffect, GoldSparkles } from '../everletter/shared/components/Effects';
 
+const defaultFeatures = [
+  { icon: '✦', text: 'Dibuat sepenuhnya custom sesuai keinginanmu.' },
+  { icon: '◈', text: 'Setiap detail punya makna, bukan sekadar dekorasi.' },
+  { icon: '❖', text: 'Bisa dipakai untuk momen apa pun — tanpa batas.' },
+  { icon: '✧', text: 'Ini bukan template. Ini ceritamu.' },
+];
+
 export default function SignaturePage() {
   const { config, loading, error } = useConfigLoader('/config.json');
 
@@ -14,10 +21,14 @@ export default function SignaturePage() {
   if (error || !config) return <BaseLayout><div className="flex h-screen items-center justify-center text-elegant-white/60">Terjadi kesalahan.</div></BaseLayout>;
 
   const messages = config.message.split('\n\n');
+  const features = config.features || defaultFeatures;
 
   return (
     <BaseLayout>
-      <Head><title>{config.title} — Khusus untuk {config.recipient}</title></Head>
+      <Head>
+        <title>{config.title} — Khusus untuk {config.recipient}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
 
       {/* Music player */}
       {config.music && (
@@ -61,7 +72,7 @@ export default function SignaturePage() {
             {config.title}
           </h1>
           <p className="mt-8 text-elegant-white/45 text-lg font-light leading-relaxed">
-            Halaman ini dibuat khusus untukmu. Setiap detailnya menyesuaikan cerita kita.
+            {config.subtitle || 'Halaman ini dibuat khusus untukmu. Setiap detailnya menyesuaikan cerita kita.'}
           </p>
           <p className="mt-4 text-elegant-white/25 text-sm">
             Untuk {config.recipient}
@@ -135,15 +146,10 @@ export default function SignaturePage() {
         </div>
       </section>
 
-      {/* Why This Is Special - Modular Feature Grid */}
+      {/* Why This Is Special - Config-Driven Feature Grid */}
       <Section title="Kenapa Ini Spesial">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            { icon: '✦', text: 'Dibuat sepenuhnya custom sesuai keinginanmu.' },
-            { icon: '◈', text: 'Setiap detail punya makna, bukan sekadar dekorasi.' },
-            { icon: '❖', text: 'Bisa dipakai untuk momen apa pun — tanpa batas.' },
-            { icon: '✧', text: 'Ini bukan template. Ini ceritamu.' },
-          ].map((item, i) => (
+          {features.map((item, i) => (
             <GlassCard key={i} delay={i * 0.1} className="p-6 text-center" intensity="subtle">
               <span className="text-gold text-xl">{item.icon}</span>
               <p className="mt-3 text-elegant-white/65 text-sm font-light">{item.text}</p>

@@ -176,4 +176,4 @@ export function CosmicParticles({ count = 30 }: { count?: number }) {
   );
 }
 
-export default { PetalsEffect, StarfieldEffect, GoldSparkles, CosmicParticles };
+

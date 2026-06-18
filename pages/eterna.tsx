@@ -19,8 +19,8 @@ export default function EternaPage() {
     return () => clearTimeout(timer);
   }, [loading, error, config]);
 
-  if (loading) return <BaseLayout><div className="flex h-screen items-center justify-center text-elegant-white/60">Memuat...</div></BaseLayout>;
-  if (error || !config) return <BaseLayout><div className="flex h-screen items-center justify-center text-elegant-white/60">Terjadi kesalahan.</div></BaseLayout>;
+  if (loading) return <BaseLayout variant="premium"><div className="flex h-screen items-center justify-center text-elegant-white/60">Memuat...</div></BaseLayout>;
+  if (error || !config) return <BaseLayout variant="premium"><div className="flex h-screen items-center justify-center text-elegant-white/60">Terjadi kesalahan.</div></BaseLayout>;
 
   const messages = config.message.split('\n\n');
   const reasons = config.reasons || messages.slice(1, 4);
@@ -33,12 +33,15 @@ export default function EternaPage() {
   };
 
   return (
-    <BaseLayout>
-      <Head><title>Surat untuk {config.recipient}</title></Head>
+    <BaseLayout variant="premium">
+      <Head>
+        <title>Surat untuk {config.recipient}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
 
       {/* Music player (optional) */}
       {config.music && (
-        <MusicPlayer src={`/music/${config.music}`} title={config.musicTitle || 'Now Playing'} variant="ultra" />
+        <MusicPlayer src={`/music/${config.music}`} title={config.musicTitle || 'Now Playing'} variant="premium" />
       )}
 
       <AnimatePresence mode="wait">
@@ -52,7 +55,7 @@ export default function EternaPage() {
           >
             {/* Gold ring spinner */}
             <motion.div
-              className="w-16 h-16 rounded-full border-2 border-gold/20 border-t-gold/80"
+              className="w-16 h-16 rounded-full border-2 border-rose/20 border-t-rose/80"
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
             />
@@ -60,15 +63,15 @@ export default function EternaPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-8 text-gold/50 text-sm tracking-[0.3em] uppercase"
+              className="mt-8 text-rose/50 text-sm tracking-[0.3em] uppercase"
             >
-              Menyiapkan sesuatu yang mewah...
+              Menyiapkan sesuatu yang spesial...
             </motion.p>
-            {/* Gold sparkles around loader */}
+            {/* Sparkles around loader */}
             {Array.from({ length: 8 }).map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-gold rounded-full"
+                className="absolute w-1 h-1 bg-rose rounded-full"
                 style={{
                   top: `${30 + Math.random() * 40}%`,
                   left: `${30 + Math.random() * 40}%`,
@@ -102,14 +105,14 @@ export default function EternaPage() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3, type: 'spring', stiffness: 150 }}
-                  className="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mx-auto mb-8"
+                  className="w-12 h-12 rounded-full border border-rose/30 flex items-center justify-center mx-auto mb-8"
                 >
-                  <svg width="20" height="20" viewBox="0 0 10 10" fill="none">
-                    <path d="M5 0L6.12 3.88L10 5L6.12 6.12L5 10L3.88 6.12L0 5L3.88 3.88L5 0Z" fill="#D4AF37" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8A0BF" strokeWidth="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                   </svg>
                 </motion.div>
 
-                <p className="text-gold/60 text-sm font-medium tracking-[0.3em] uppercase mb-6">Sebuah Surat</p>
+                <p className="text-rose/60 text-sm font-medium tracking-[0.3em] uppercase mb-6">Sebuah Surat</p>
                 <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-balance">
                   {config.title}
                 </h1>
@@ -130,7 +133,7 @@ export default function EternaPage() {
             </section>
 
             {/* Opening Letter */}
-            <Section title="Pembukaan">
+            <Section variant="premium" title="Pembukaan">
               <GlassCard className="p-8 sm:p-10" intensity="strong">
                 <motion.p {...fadeUp} className="text-elegant-white/85 text-xl font-light leading-relaxed font-display italic">
                   Aku cuma mau bilang satu hal...
@@ -143,7 +146,7 @@ export default function EternaPage() {
 
             {/* Luxury Photo Gallery */}
             {config.photos.length > 0 && (
-              <Section title="Kenangan Kita">
+              <Section variant="premium" title="Kenangan Kita">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {config.photos.map((photo, i) => (
                     <GlassCard key={i} delay={i * 0.12} className="overflow-hidden !p-0 group">
@@ -152,12 +155,12 @@ export default function EternaPage() {
                           src={`/photos/${photo}`}
                           alt={`Kenangan ${i + 1}`}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x500/0a0a12/D4AF37?text=Foto+${i + 1}`; }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = `https://placehold.co/400x500/0a0a12/E8A0BF?text=Foto+${i + 1}`; }}
                         />
-                        {/* Gold overlay on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        {/* Rose overlay on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-rose/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
-                      <div className="p-5 border-t border-gold/10">
+                      <div className="p-5 border-t border-rose/10">
                         <p className="text-elegant-white/50 text-sm">
                           {config.captions?.[i] || `Kenangan ${i + 1}`}
                         </p>
@@ -169,12 +172,12 @@ export default function EternaPage() {
             )}
 
             {/* Why You Matter */}
-            <Section title="Alasan Sayang">
+            <Section variant="premium" title="Alasan Sayang">
               <div className="space-y-4">
                 {reasons.slice(0, 4).map((reason, i) => (
                   <GlassCard key={i} delay={i * 0.1} className="p-6 flex items-start gap-4" intensity="subtle">
-                    <span className="mt-1 w-7 h-7 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-gold text-xs font-medium">{i + 1}</span>
+                    <span className="mt-1 w-7 h-7 rounded-full bg-rose/10 border border-rose/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-rose text-xs font-medium">{i + 1}</span>
                     </span>
                     <p className="text-elegant-white/75 font-light leading-relaxed">{reason}</p>
                   </GlassCard>
@@ -182,26 +185,35 @@ export default function EternaPage() {
               </div>
             </Section>
 
-            {/* Memory Section */}
-            <Section title="Kenangan Indah">
+            {/* Memory Section - Config Driven */}
+            <Section variant="premium" title="Kenangan Indah">
               <GlassCard className="p-8 sm:p-10" intensity="strong">
                 <motion.p {...fadeUp} className="text-elegant-white/75 text-lg leading-relaxed font-light">
-                  Setiap momen bersamamu adalah kenangan yang tak ternilai. Dari tawa kecil sampai percakapan panjang tengah malam — semuanya terasa berarti karena bersamamu.
+                  {config.memoryText || 'Setiap momen bersamamu adalah kenangan yang tak ternilai.'}
                 </motion.p>
-                <motion.p {...fadeUp} className="mt-6 text-elegant-white/70 text-lg leading-relaxed font-light">
-                  Kalau aku bisa mengulang satu hari, aku akan memilih hari di mana aku pertama kali bertemu kamu.
-                </motion.p>
+                {config.memoryTextExtra && (
+                  <motion.p {...fadeUp} className="mt-6 text-elegant-white/70 text-lg leading-relaxed font-light">
+                    {config.memoryTextExtra}
+                  </motion.p>
+                )}
               </GlassCard>
             </Section>
 
             {/* Long Letter */}
             {messages.length > 3 && (
-              <Section title="Yang Ada di Hati">
+              <Section variant="premium" title="Yang Ada di Hati">
                 <GlassCard className="p-8 sm:p-10" intensity="strong">
                   {messages.slice(3).map((msg, i) => (
-                    <p key={i} className="text-elegant-white/80 text-lg leading-relaxed font-light mb-6 last:mb-0">
+                    <motion.p
+                      key={i}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: i * 0.12 }}
+                      className="text-elegant-white/80 text-lg leading-relaxed font-light mb-6 last:mb-0"
+                    >
                       {msg}
-                    </p>
+                    </motion.p>
                   ))}
                 </GlassCard>
               </Section>
@@ -220,7 +232,7 @@ export default function EternaPage() {
                   <p className="font-display text-2xl sm:text-3xl font-semibold leading-snug">
                     {config.closingMessage || `Terima kasih sudah menjadi bagian dari rencana hidupku, ${config.recipient}.`}
                   </p>
-                  <div className="mt-8 w-16 h-px bg-gold/30 mx-auto" />
+                  <div className="mt-8 w-16 h-px bg-rose/30 mx-auto" />
                   <p className="mt-6 text-elegant-white/50">
                     {config.closingSignature || 'Dengan cinta sepenuh hati'},<br />
                     <span className="text-elegant-white font-medium">{config.sender}</span>

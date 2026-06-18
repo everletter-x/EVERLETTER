@@ -36,6 +36,23 @@ export function useConfigLoader<T = EverLetterConfig>(configPath: string) {
 }
 
 /**
+ * Flower definition for bloom template
+ */
+export interface Flower {
+  flower: string;
+  meaning: string;
+  emoji: string;
+}
+
+/**
+ * Feature definition for signature template
+ */
+export interface Feature {
+  icon: string;
+  text: string;
+}
+
+/**
  * Chapter structure for cinematic/scroll templates
  */
 export interface Chapter {
@@ -56,6 +73,10 @@ export interface EverLetterConfig {
   captions?: string[];
   reasons?: string[];
   chapters?: Chapter[];
+  flowers?: Flower[];
+  features?: Feature[];
+  memoryText?: string;
+  memoryTextExtra?: string;
   theme: string;
   music?: string;
   musicTitle?: string;

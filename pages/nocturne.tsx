@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BaseLayout, GlassCard } from '../everletter/shared/components/BaseLayout';
 import { Section } from '../everletter/shared/components/Section';
 import { useConfigLoader } from '../everletter/shared/utils/configLoader';
+import { MusicPlayer } from '../everletter/shared/components/MusicPlayer';
+import { CosmicParticles } from '../everletter/shared/components/Effects';
 
 export default function NocturnePage() {
   const { config, loading, error } = useConfigLoader('/config.json');
@@ -21,7 +23,15 @@ export default function NocturnePage() {
 
   return (
     <BaseLayout variant="premium">
-      <Head><title>Hadiah untuk {config.recipient}</title></Head>
+      <Head>
+        <title>Hadiah untuk {config.recipient}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+
+      {/* Music player */}
+      {config.music && opened && (
+        <MusicPlayer src={`/music/${config.music}`} title={config.musicTitle || 'Now Playing'} variant="premium" />
+      )}
 
       <AnimatePresence mode="wait">
         {!opened ? (
@@ -105,8 +115,11 @@ export default function NocturnePage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2 }}
           >
+            {/* Subtle particles after reveal */}
+            <CosmicParticles count={20} />
+
             {/* Hero */}
-            <section className="min-h-[85vh] flex items-center justify-center px-5 py-20">
+            <section className="min-h-[85vh] flex items-center justify-center px-5 py-20 relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -125,7 +138,7 @@ export default function NocturnePage() {
                   {config.title}
                 </h1>
                 <p className="mt-8 text-elegant-white/55 text-lg font-light leading-relaxed">
-                  Hadiah ini mungkin sederhana, tapi niatnya besar. Aku harap ini bisa bikin kamu senyum.
+                  {config.subtitle || 'Hadiah ini mungkin sederhana, tapi niatnya besar. Aku harap ini bisa bikin kamu senyum.'}
                 </p>
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
@@ -135,6 +148,7 @@ export default function NocturnePage() {
                   <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>
+                  <p className="text-xs mt-2">Scroll ke bawah</p>
                 </motion.div>
               </motion.div>
             </section>
@@ -186,19 +200,42 @@ export default function NocturnePage() {
             <Section variant="premium" title="Kenapa Kamu Spesial">
               <div className="space-y-4">
                 {reasons.map((r, i) => (
-                  <GlassCard key={i} delay={i * 0.1} className="p-6" intensity="subtle">
+                  <GlassCard key={i} delay={i * 0.1} className="p-6 flex items-start gap-4" intensity="subtle">
+                    <motion.div
+                      className="w-8 h-8 rounded-full bg-gradient-to-br from-lavender/20 to-rose/10 flex items-center justify-center flex-shrink-0 mt-0.5"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <span className="text-lavender/70 text-xs font-medium">{i + 1}</span>
+                    </motion.div>
                     <p className="text-elegant-white/75 font-light leading-relaxed">{r}</p>
                   </GlassCard>
                 ))}
               </div>
             </Section>
 
-            {/* Memory Section */}
+            {/* Memory Section - Config Driven */}
             <Section variant="premium" title="Kenangan">
               <GlassCard className="p-8 sm:p-10" intensity="strong">
-                <p className="text-elegant-white/75 text-lg leading-relaxed font-light">
-                  Setiap momen bersamamu adalah kenangan yang tak ternilai. Dari tawa kecil sampai percakapan panjang tengah malam — semuanya terasa berarti karena bersamamu.
-                </p>
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="text-elegant-white/75 text-lg leading-relaxed font-light"
+                >
+                  {config.memoryText || 'Setiap momen bersamamu adalah kenangan yang tak ternilai.'}
+                </motion.p>
+                {config.memoryTextExtra && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.15 }}
+                    className="mt-6 text-elegant-white/70 text-lg leading-relaxed font-light"
+                  >
+                    {config.memoryTextExtra}
+                  </motion.p>
+                )}
               </GlassCard>
             </Section>
 
@@ -207,16 +244,23 @@ export default function NocturnePage() {
               <Section variant="premium" title="Yang Ingin Aku Bilang">
                 <GlassCard className="p-8 sm:p-10" intensity="strong">
                   {messages.slice(2).map((msg, i) => (
-                    <p key={i} className="text-elegant-white/80 text-lg leading-relaxed font-light mb-6 last:mb-0">
+                    <motion.p
+                      key={i}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: i * 0.12 }}
+                      className="text-elegant-white/80 text-lg leading-relaxed font-light mb-6 last:mb-0"
+                    >
                       {msg}
-                    </p>
+                    </motion.p>
                   ))}
                 </GlassCard>
               </Section>
             )}
 
             {/* Closing */}
-            <section className="px-5 py-24 text-center">
+            <section className="px-5 py-24 text-center relative z-10">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}

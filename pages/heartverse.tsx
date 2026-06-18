@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BaseLayout, GlassCard } from '../everletter/shared/components/BaseLayout';
@@ -21,6 +21,26 @@ export default function HeartversePage() {
   const { config, loading, error } = useConfigLoader('/config.json');
   const [currentPhoto, setCurrentPhoto] = useState(0);
 
+  // Touch swipe support
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && currentPhoto < (config?.photos.length || 0) - 1) {
+        setCurrentPhoto(p => p + 1);
+      } else if (diff < 0 && currentPhoto > 0) {
+        setCurrentPhoto(p => p - 1);
+      }
+    }
+  }, [currentPhoto, config?.photos.length]);
+
   if (loading) return <BaseLayout variant="premium"><div className="flex h-screen items-center justify-center text-elegant-white/60">Memuat...</div></BaseLayout>;
   if (error || !config) return <BaseLayout variant="premium"><div className="flex h-screen items-center justify-center text-elegant-white/60">Terjadi kesalahan.</div></BaseLayout>;
 
@@ -33,7 +53,10 @@ export default function HeartversePage() {
 
   return (
     <BaseLayout variant="premium">
-      <Head><title>Cerita Kita — untuk {config.recipient}</title></Head>
+      <Head>
+        <title>Cerita Kita — untuk {config.recipient}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
 
       {/* Cosmic particles */}
       <CosmicParticles count={35} />
@@ -65,7 +88,7 @@ export default function HeartversePage() {
             {config.title}
           </h1>
           <p className="mt-8 text-elegant-white/50 text-lg font-light leading-relaxed">
-            Di antara miliaran kemungkinan, aku bersyukur dipertemukan denganmu.
+            {config.subtitle || 'Di antara miliaran kemungkinan, aku bersyukur dipertemukan denganmu.'}
           </p>
           <motion.p
             initial={{ opacity: 0 }}
@@ -82,19 +105,31 @@ export default function HeartversePage() {
       {messages.length > 0 && (
         <Section variant="premium" title="Cerita Kita">
           <GlassCard className="p-8 sm:p-10" intensity="strong">
-            <p className="text-elegant-white/80 text-lg leading-relaxed font-light">
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-elegant-white/80 text-lg leading-relaxed font-light"
+            >
               {messages[0]}
-            </p>
+            </motion.p>
             {messages[1] && (
-              <p className="mt-5 text-elegant-white/70 text-lg leading-relaxed font-light">
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.12 }}
+                className="mt-5 text-elegant-white/70 text-lg leading-relaxed font-light"
+              >
                 {messages[1]}
-              </p>
+              </motion.p>
             )}
           </GlassCard>
         </Section>
       )}
 
-      {/* Photo Story Cards - Carousel */}
+      {/* Photo Story Cards - Carousel with Touch Swipe */}
       {totalPhotos > 0 && (
         <section className="px-5 py-16 relative z-10">
           <div className="max-w-lg mx-auto">
@@ -107,7 +142,11 @@ export default function HeartversePage() {
               Galeri Kenangan
             </motion.p>
 
-            <div className="relative">
+            <div
+              className="relative"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentPhoto}
@@ -148,6 +187,7 @@ export default function HeartversePage() {
                           <button
                             key={i}
                             onClick={() => setCurrentPhoto(i)}
+                            aria-label={`Foto ${i + 1}`}
                             className={`h-1 rounded-full transition-all duration-300 ${
                               i === currentPhoto ? 'w-6 bg-lavender' : 'w-1.5 bg-white/20 hover:bg-white/40'
                             }`}
@@ -164,6 +204,7 @@ export default function HeartversePage() {
                 <button
                   onClick={prevPhoto}
                   disabled={currentPhoto === 0}
+                  aria-label="Foto sebelumnya"
                   className="glass-subtle w-12 h-12 rounded-full flex items-center justify-center text-elegant-white/60 disabled:opacity-20 card-hover"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,6 +224,7 @@ export default function HeartversePage() {
                 <button
                   onClick={nextPhoto}
                   disabled={currentPhoto === totalPhotos - 1}
+                  aria-label="Foto berikutnya"
                   className="glass-subtle w-12 h-12 rounded-full flex items-center justify-center text-elegant-white/60 disabled:opacity-20 card-hover"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,7 +271,7 @@ export default function HeartversePage() {
         >
           <GlassCard className="p-10 sm:p-14" intensity="strong">
             <p className="font-display text-2xl sm:text-3xl font-semibold leading-snug">
-              Terima kasih sudah jadi bagian dari kenanganku, {config.recipient}.
+              {config.closingMessage || `Terima kasih sudah jadi bagian dari kenanganku, ${config.recipient}.`}
             </p>
             <p className="mt-5 text-elegant-white/55 text-lg font-light">
               Semoga setiap foto di sini mengingatkanmu bahwa kamu tidak pernah sendiri.

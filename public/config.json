@@ -29,6 +29,19 @@
       "content": "Setiap momen bersamamu terasa seperti adegan yang layak diingat."
     }
   ],
+  "flowers": [
+    { "flower": "Mawar", "meaning": "Cinta yang tulus dan abadi", "emoji": "🌹" },
+    { "flower": "Tulip", "meaning": "Kebahagiaan sempurna", "emoji": "🌷" },
+    { "flower": "Lavender", "meaning": "Ketenangan dan kedamaian", "emoji": "💜" }
+  ],
+  "features": [
+    { "icon": "✦", "text": "Dibuat sepenuhnya custom sesuai keinginanmu." },
+    { "icon": "◈", "text": "Setiap detail punya makna, bukan sekadar dekorasi." },
+    { "icon": "❖", "text": "Bisa dipakai untuk momen apa pun — tanpa batas." },
+    { "icon": "✧", "text": "Ini bukan template. Ini ceritamu." }
+  ],
+  "memoryText": "Setiap momen bersamamu adalah kenangan yang tak ternilai. Dari tawa kecil sampai percakapan panjang tengah malam — semuanya terasa berarti karena bersamamu.",
+  "memoryTextExtra": "Kalau aku bisa mengulang satu hari, aku akan memilih hari di mana aku pertama kali bertemu kamu.",
   "theme": "pink",
   "music": "song.mp3",
   "musicTitle": "Our Song",

@@ -27,12 +27,25 @@ export default function CinematicPage() {
     { title: 'Yang Tak Terucapkan', content: messages[1] || 'Setiap momen bersamamu terasa seperti adegan yang layak diingat.' },
   ];
 
-  const scenes: Scene[] = ['opening', 'ch1', 'ch2', 'gallery', 'letter', 'ending'];
+  const hasPhotos = config.photos && config.photos.length > 0;
+  const scenes: Scene[] = hasPhotos
+    ? ['opening', 'ch1', 'ch2', 'gallery', 'letter', 'ending']
+    : ['opening', 'ch1', 'ch2', 'letter', 'ending'];
   const sceneIndex = scenes.indexOf(scene);
+
+  // Navigate to next scene safely
+  const goToNextScene = (targetScene: Scene) => {
+    if (scenes.includes(targetScene)) {
+      setScene(targetScene);
+    }
+  };
 
   return (
     <BaseLayout>
-      <Head><title>Untuk {config.recipient} — Sebuah Cerita Sinematik</title></Head>
+      <Head>
+        <title>Untuk {config.recipient} — Sebuah Cerita Sinematik</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
 
       {/* Music player - mandatory for cinematic */}
       {config.music && (
@@ -130,7 +143,7 @@ export default function CinematicPage() {
                   </p>
                 )}
               </GlassCard>
-              <button onClick={() => setScene('ch2')} className="mt-12 glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
+              <button onClick={() => goToNextScene('ch2')} className="mt-12 glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
                 Lanjut →
               </button>
             </div>
@@ -160,15 +173,15 @@ export default function CinematicPage() {
                   </p>
                 )}
               </GlassCard>
-              <button onClick={() => setScene('gallery')} className="mt-12 glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
-                Galeri →
+              <button onClick={() => goToNextScene(hasPhotos ? 'gallery' : 'letter')} className="mt-12 glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
+                {hasPhotos ? 'Galeri →' : 'Surat →'}
               </button>
             </div>
           </motion.section>
         )}
 
         {/* ── Gallery with Ken Burns ── */}
-        {scene === 'gallery' && (
+        {scene === 'gallery' && hasPhotos && (
           <motion.section
             key="gallery"
             className="min-h-screen flex items-center justify-center px-5 py-20 relative z-10"
@@ -206,7 +219,7 @@ export default function CinematicPage() {
                 ))}
               </div>
               <div className="text-center mt-12">
-                <button onClick={() => setScene('letter')} className="glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
+                <button onClick={() => goToNextScene('letter')} className="glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
                   Surat Terakhir →
                 </button>
               </div>
@@ -251,13 +264,13 @@ export default function CinematicPage() {
                   >
                     <div className="mt-10 w-20 h-px bg-gold/25 mx-auto" />
                     <p className="mt-6 text-center text-elegant-white/50 font-serif-luxury italic">
-                      Terima kasih sudah menjadi rumah.
+                      {config.memoryText || 'Terima kasih sudah menjadi rumah.'}
                     </p>
                   </motion.div>
                 </div>
               </GlassCard>
               <div className="text-center mt-12">
-                <button onClick={() => setScene('ending')} className="glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
+                <button onClick={() => goToNextScene('ending')} className="glass-subtle px-8 py-3 text-sm text-gold card-hover tracking-wide">
                   Penutup →
                 </button>
               </div>
@@ -285,7 +298,7 @@ export default function CinematicPage() {
                   <span className="gold-gradient">{config.recipient}</span>
                 </h2>
                 <p className="mt-10 text-elegant-white/55 text-xl font-light">
-                  Kamu bukan sekadar seseorang yang aku kenal.
+                  {config.closingMessage || 'Kamu bukan sekadar seseorang yang aku kenal.'}
                 </p>
                 <p className="mt-3 text-elegant-white/45 text-lg font-light">
                   Kamu adalah cerita yang tidak ingin aku akhiri.
