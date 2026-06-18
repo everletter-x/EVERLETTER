@@ -779,6 +779,7 @@ from @BLUEPRINT.md  = bp
 from @product.md = pr / pc
 
 =
-
+## refenrence and ex. :
+from @website_summary_nabila.pdfs
 
 // End of Blueprint

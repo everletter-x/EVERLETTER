@@ -2,13 +2,37 @@
   "recipient": "Nabila",
   "sender": "Rizky",
   "title": "Selamat Ulang Tahun",
+  "subtitle": "Untuk seseorang yang membuat hariku lebih indah",
   "message": "Terima kasih sudah hadir di hidupku.\n\nKalau boleh jujur, kamu adalah bagian paling indah dari hariku.\n\nSetiap hari denganmu adalah berkat yang aku tidak pernah terduga.\n\nAku sangat bersyukur memiliki kamu sebagai pasanganku.",
   "photos": [
     "photo1.jpg",
     "photo2.jpg",
     "photo3.jpg"
   ],
+  "captions": [
+    "Pertama kali kita bertemu — dan segalanya berubah.",
+    "Tawa yang tidak pernah bosan aku dengar.",
+    "Momen kecil yang jadi kenangan besar."
+  ],
+  "reasons": [
+    "Kamu bikin hari-hariku terasa lebih hidup.",
+    "Senyummu itu obat buat semua capekku.",
+    "Bersamamu, aku jadi versi terbaik dari diriku."
+  ],
+  "chapters": [
+    {
+      "title": "Awal Mula",
+      "content": "Ada orang-orang yang hadir dalam hidup kita tanpa banyak suara, tapi mengubah segalanya."
+    },
+    {
+      "title": "Yang Tak Terucapkan",
+      "content": "Setiap momen bersamamu terasa seperti adegan yang layak diingat."
+    }
+  ],
   "theme": "pink",
   "music": "song.mp3",
-  "template": "premium-03"
+  "musicTitle": "Our Song",
+  "template": "premium-01",
+  "closingMessage": "Semoga halaman kecil ini bisa membuatmu tersenyum.",
+  "closingSignature": "Dengan sepenuh hati"
 }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * @param configPath - Path to the config JSON file
  * @returns Configuration object and loading state
  */
-export function useConfigLoader<T = any>(configPath: string) {
+export function useConfigLoader<T = EverLetterConfig>(configPath: string) {
   const [config, setConfig] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -36,17 +36,32 @@ export function useConfigLoader<T = any>(configPath: string) {
 }
 
 /**
- * Default configuration structure for EverLetter
+ * Chapter structure for cinematic/scroll templates
+ */
+export interface Chapter {
+  title: string;
+  content: string;
+}
+
+/**
+ * Extended configuration structure for all EverLetter templates
  */
 export interface EverLetterConfig {
   recipient: string;
   sender: string;
   title: string;
+  subtitle?: string;
   message: string;
   photos: string[];
+  captions?: string[];
+  reasons?: string[];
+  chapters?: Chapter[];
   theme: string;
   music?: string;
+  musicTitle?: string;
   template: string;
+  closingMessage?: string;
+  closingSignature?: string;
 }
 
 /**
