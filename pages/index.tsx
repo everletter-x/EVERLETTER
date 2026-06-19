@@ -10,7 +10,7 @@ const products = [
     tier: 'Premium',
     tagline: 'Hitungan mundur menuju kejutan.',
     desc: 'Membangun antisipasi lewat countdown 3-2-1 sebelum halaman utama terungkap. Momen yang terasa seperti event — dan gampang di-viral-kan di TikTok.',
-    price: 'Rp 49.000',
+    price: 'Rp 60.000',
     color: 'from-rose/20 to-pink-soft/20',
     accent: 'rose',
     href: 'https://premium1everletter.vercel.app',
@@ -21,7 +21,7 @@ const products = [
     tier: 'Premium',
     tagline: 'Buka hadiahnya, rasakan kejutannya.',
     desc: 'Kotak hadiah interaktif yang diklik untuk membuka. Sederhana dipahami, tapi menghasilkan momen emosional yang kuat saat terungkap.',
-    price: 'Rp 49.000',
+    price: 'Rp 60.000',
     color: 'from-lavender/20 to-rose/10',
     accent: 'lavender',
     href: 'https://premium2everletter.vercel.app',
@@ -32,7 +32,7 @@ const products = [
     tier: 'Premium',
     tagline: 'Surat cinta yang mengalir tanpa akhir.',
     desc: 'Paling fleksibel untuk copywriting panjang. Scroll bertahap memberikan pengalaman intimate dan personal — terasa seperti dibacakan langsung.',
-    price: 'Rp 49.000',
+    price: 'Rp 60.000',
     color: 'from-gold/20 to-starlight/10',
     accent: 'gold',
     href: 'https://premium3everletter.vercel.app',
@@ -43,7 +43,7 @@ const products = [
     tier: 'Premium',
     tagline: 'Setiap foto punya cerita.',
     desc: 'Photo-driven dan gampang dijual. Cocok untuk customer yang ingin foto sebagai pusat pengalaman — setiap gambar punya caption dan makna.',
-    price: 'Rp 49.000',
+    price: 'Rp 60.000',
     color: 'from-lavender/20 to-rose/20',
     accent: 'lavender',
     href: 'https://premium4everletter.vercel.app',
@@ -54,7 +54,7 @@ const products = [
     tier: 'Ultra Premium',
     tagline: 'Pengalaman sinematik untuk seseorang yang mengubah hidupmu.',
     desc: 'Paling "wah". Intro sinematik → chapter scrolling → foto + musik → surat panjang → ending scene. Pengalaman mewah yang mudah dibedakan dari Premium.',
-    price: 'Rp 149.000',
+    price: 'Rp 65.000',
     color: 'from-gold/20 to-gold-light/10',
     accent: 'gold',
     href: 'https://ultra1everletter.vercel.app',
@@ -65,7 +65,7 @@ const products = [
     tier: 'Ultra Premium',
     tagline: 'Sepenuhnya custom. Sepenuhnya untukmu.',
     desc: 'Custom premium tanpa batas. Bisa dipakai untuk momen apa pun — proposal, wedding, graduation, atau cerita personal. Flagship tier.',
-    price: 'Rp 199.000',
+    price: 'Rp 65.000',
     color: 'from-gold/30 to-starlight/10',
     accent: 'gold',
     href: 'https://ultra2everletter.vercel.app',
@@ -244,7 +244,7 @@ export default function HomePage() {
             <p className="text-rose/80 text-xs font-medium tracking-[0.3em] uppercase mb-3">Premium Collection</p>
             <h2 className="font-display text-3xl sm:text-4xl font-bold">Pilih Template, Kirim Perasaan</h2>
             <p className="mt-4 text-elegant-white/50 max-w-lg mx-auto">
-              Empat template premium yang dirancang untuk membuat seseorang merasa spesial.
+              Empat design premium yang dirancang untuk membuat seseorang merasa spesial.
             </p>
           </motion.div>
 
@@ -343,7 +343,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { step: '01', title: 'Pilih Template', desc: 'Lihat demo, pilih yang paling cocok untuk momenmu.' },
+              { step: '01', title: 'Pilih Design', desc: 'Lihat demo, pilih yang paling cocok untuk momenmu.' },
               { step: '02', title: 'Kirim Data', desc: 'Nama, foto, pesan — kirim ke kami. Kami yang atur.' },
               { step: '03', title: 'Terima Link', desc: 'Dalam 15–60 menit, link siap dikirim ke orang spesial.' },
             ].map((item, i) => (
