@@ -1,1 +1,0 @@
-# Ultra Premium 2 - Signature Memory Template

@@ -1,1 +1,0 @@
-# Premium 4 - Photo Story Card Template

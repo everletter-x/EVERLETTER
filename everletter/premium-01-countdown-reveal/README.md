@@ -1,1 +1,0 @@
-# Premium 1 - Countdown Reveal Template

@@ -10,21 +10,21 @@ everletter.com/product?id=1
 
 But:
 
-bloom.everletter.site
-nocturne.everletter.site
-eterna.everletter.site
-heartverse.everletter.site
-cinematic.everletter.site
-signature.everletter.site
+premium1everletter.vercel.app
+premium2everletter.vercel.app
+premium3everletter.vercel.app
+premium4everletter.vercel.app
+ultra1everletter.vercel.app
+ultra2everletter.vercel.app
 
 Or Vercel:
 
-everletter-bloom.vercel.app
-everletter-nocturne.vercel.app
-everletter-eterna.vercel.app
-everletter-heartverse.vercel.app
-everletter-cinematic.vercel.app
-everletter-signature.vercel.app
+premium1everletter.vercel.app
+premium2everletter.vercel.app
+premium3everletter.vercel.app
+premium4everletter.vercel.app
+ultra1everletter.vercel.app
+ultra2everletter.vercel.app
 
 
 ---

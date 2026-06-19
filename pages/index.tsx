@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BaseLayout, GlassCard } from '../everletter/shared/components/BaseLayout';
@@ -10,66 +9,66 @@ const products = [
     name: 'Bloom',
     tier: 'Premium',
     tagline: 'Hitungan mundur menuju kejutan.',
-    desc: 'Loading → Countdown 3-2-1 → Halaman utama terbuka. Cocok untuk ulang tahun, anniversary, dan kejutan romantis.',
+    desc: 'Membangun antisipasi lewat countdown 3-2-1 sebelum halaman utama terungkap. Momen yang terasa seperti event — dan gampang di-viral-kan di TikTok.',
     price: 'Rp 49.000',
     color: 'from-rose/20 to-pink-soft/20',
     accent: 'rose',
-    href: '/bloom',
+    href: 'https://premium1everletter.vercel.app',
   },
   {
     id: 'nocturne',
     name: 'Nocturne',
     tier: 'Premium',
     tagline: 'Buka hadiahnya, rasakan kejutannya.',
-    desc: 'Gift box animasi → klik untuk buka → konten terungkap. Ideal untuk birthday, permintaan maaf, dan pernyataan perasaan.',
+    desc: 'Kotak hadiah interaktif yang diklik untuk membuka. Sederhana dipahami, tapi menghasilkan momen emosional yang kuat saat terungkap.',
     price: 'Rp 49.000',
     color: 'from-lavender/20 to-rose/10',
     accent: 'lavender',
-    href: '/nocturne',
+    href: 'https://premium2everletter.vercel.app',
   },
   {
     id: 'eterna',
     name: 'Eterna',
     tier: 'Premium',
     tagline: 'Surat cinta yang mengalir tanpa akhir.',
-    desc: 'Scroll bertahap → section muncul satu per satu. Sempurna untuk pesan panjang, anniversary, dan apresiasi romantis.',
+    desc: 'Paling fleksibel untuk copywriting panjang. Scroll bertahap memberikan pengalaman intimate dan personal — terasa seperti dibacakan langsung.',
     price: 'Rp 49.000',
     color: 'from-gold/20 to-starlight/10',
     accent: 'gold',
-    href: '/eterna',
+    href: 'https://premium3everletter.vercel.app',
   },
   {
     id: 'heartverse',
     name: 'Heartverse',
     tier: 'Premium',
     tagline: 'Setiap foto punya cerita.',
-    desc: 'Card slider → tiap foto punya caption → pesan penutup. Cocok untuk pasangan dengan banyak kenangan.',
+    desc: 'Photo-driven dan gampang dijual. Cocok untuk customer yang ingin foto sebagai pusat pengalaman — setiap gambar punya caption dan makna.',
     price: 'Rp 49.000',
     color: 'from-lavender/20 to-rose/20',
     accent: 'lavender',
-    href: '/heartverse',
+    href: 'https://premium4everletter.vercel.app',
   },
   {
     id: 'cinematic',
     name: 'Cinematic Letter',
     tier: 'Ultra Premium',
     tagline: 'Pengalaman sinematik untuk seseorang yang mengubah hidupmu.',
-    desc: 'Intro sinematik → chapter scrolling → foto + musik → surat panjang → ending scene. Untuk kejutan ultimate.',
+    desc: 'Paling "wah". Intro sinematik → chapter scrolling → foto + musik → surat panjang → ending scene. Pengalaman mewah yang mudah dibedakan dari Premium.',
     price: 'Rp 149.000',
     color: 'from-gold/20 to-gold-light/10',
     accent: 'gold',
-    href: '/cinematic',
+    href: 'https://ultra1everletter.vercel.app',
   },
   {
     id: 'signature',
     name: 'Signature Memory',
     tier: 'Ultra Premium',
     tagline: 'Sepenuhnya custom. Sepenuhnya untukmu.',
-    desc: 'Layout custom berdasarkan permintaan. Untuk proposal, wedding, graduation, atau momen yang tak tergantikan.',
+    desc: 'Custom premium tanpa batas. Bisa dipakai untuk momen apa pun — proposal, wedding, graduation, atau cerita personal. Flagship tier.',
     price: 'Rp 199.000',
     color: 'from-gold/30 to-starlight/10',
     accent: 'gold',
-    href: '/signature',
+    href: 'https://ultra2everletter.vercel.app',
   },
 ];
 
@@ -219,14 +218,7 @@ export default function HomePage() {
             <a href="#premium" className="glass-card px-8 py-4 text-center text-elegant-white font-medium card-hover">
               Lihat Koleksi
             </a>
-            <a
-              href="https://wa.me/6281234567890?text=Halo%20EverLetter%2C%20aku%20mau%20pesan!"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gold/90 hover:bg-gold px-8 py-4 rounded-2xl text-deep-black font-semibold transition-all"
-            >
-              Pesan via WhatsApp
-            </a>
+
           </motion.div>
 
           <motion.p
@@ -266,13 +258,13 @@ export default function HomePage() {
                   <h3 className="text-xl font-semibold text-elegant-white">{product.name}</h3>
                   <span className="glass-subtle px-2 py-0.5 text-[10px] text-elegant-white/60 font-medium uppercase tracking-wider">Premium</span>
                 </div>
-                <p className="text-elegant-white/70 text-sm mb-4 leading-relaxed">{product.desc}</p>
-                <div className="flex items-center justify-between">
+                <p className="text-elegant-white/70 text-sm mb-4 leading-relaxed">{product.desc}</p>                  <div className="flex items-center justify-between mb-4">
                   <span className="text-gold font-semibold">{product.price}</span>
-                  <Link href={product.href} className="glass-subtle px-4 py-2 text-sm text-elegant-white/80 hover:text-elegant-white card-hover">
+                  <a href={product.href} target="_blank" rel="noopener noreferrer" className="glass-subtle px-4 py-2 text-sm text-elegant-white/80 hover:text-elegant-white card-hover">
                     Lihat Demo →
-                  </Link>
+                  </a>
                 </div>
+
               </GlassCard>
             ))}
           </div>
@@ -307,13 +299,13 @@ export default function HomePage() {
                   <h3 className="text-2xl font-semibold text-elegant-white">{product.name}</h3>
                   <span className="glass-subtle px-2.5 py-0.5 text-[10px] text-gold font-medium uppercase tracking-wider">Ultra Premium</span>
                 </div>
-                <p className="text-elegant-white/70 mb-5 leading-relaxed">{product.desc}</p>
-                <div className="flex items-center justify-between">
+                <p className="text-elegant-white/70 mb-5 leading-relaxed">{product.desc}</p>                  <div className="flex items-center justify-between mb-5">
                   <span className="text-gold font-semibold text-lg">{product.price}</span>
-                  <Link href={product.href} className="glass-subtle px-5 py-2.5 text-sm text-gold hover:text-gold-light card-hover">
+                  <a href={product.href} target="_blank" rel="noopener noreferrer" className="glass-subtle px-5 py-2.5 text-sm text-gold hover:text-gold-light card-hover">
                     Lihat Demo →
-                  </Link>
+                  </a>
                 </div>
+
               </GlassCard>
             ))}
           </div>
@@ -346,13 +338,13 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="font-display text-3xl sm:text-4xl font-bold">Cara Pesan</h2>
-            <p className="mt-4 text-elegant-white/50">Semudah kirim pesan WhatsApp. Selesai dalam 15–60 menit.</p>
+            <p className="mt-4 text-elegant-white/50">Selesai dalam 15–60 menit. Simple, cepat, dan personal.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { step: '01', title: 'Pilih Template', desc: 'Lihat demo, pilih yang paling cocok untuk momenmu.' },
-              { step: '02', title: 'Kirim Data', desc: 'Nama, foto, pesan — kirim via WhatsApp. Kami yang atur.' },
+              { step: '02', title: 'Kirim Data', desc: 'Nama, foto, pesan — kirim ke kami. Kami yang atur.' },
               { step: '03', title: 'Terima Link', desc: 'Dalam 15–60 menit, link siap dikirim ke orang spesial.' },
             ].map((item, i) => (
               <GlassCard key={item.step} delay={i * 0.12} className="p-8 text-center">
@@ -370,7 +362,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           <p className="font-display text-xl font-semibold gold-gradient inline-block">EverLetter</p>
           <p className="mt-3 text-elegant-white/40 text-sm">Turn Feelings Into Memories</p>
-          <p className="mt-6 text-elegant-white/20 text-xs">© 2025 EverLetter. Semua hadiah dibuat dengan sepenuh hati.</p>
+          <p className="mt-6 text-elegant-white/20 text-xs">© 2026 EverLetter. Semua hadiah dibuat dengan sepenuh hati.</p>
         </div>
       </footer>
     </BaseLayout>
