@@ -4,40 +4,36 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./everletter/**/*.{js,ts,jsx,tsx}",
+    "./shared/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
+        // Premium colors
         'pink-soft': '#F8BBD0',
-        'rose': '#E8A0BF',
-        'rose-deep': '#C77DBA',
-        'lavender': '#C3B1E1',
+        'rose': '#E91E63',
+        'lavender': '#E6E6FA',
         'warm-white': '#FDF5E6',
-        'dark-luxury': '#0D0D12',
-        'gold': '#D4AF37',
-        'gold-light': '#F5D77A',
-        'deep-black': '#050507',
+        // Ultra colors
+        'dark-luxury': '#1A1A1A',
+        'gold-accent': '#D4AF37',
+        'deep-black': '#0A0A0A',
         'elegant-white': '#F8F6F3',
-        'starlight': '#FFF8DC',
-        'glass-white': 'rgba(255,255,255,0.05)',
+        'starlight-glow': '#FFF8DC',
       },
-      fontFamily: {
-        'display': ['"Playfair Display"', 'Georgia', 'serif'],
-        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        'serif-luxury': ['"Cormorant Garamond"', 'Georgia', 'serif'],
-      },
-      backdropBlur: {
-        'xs': '4px',
-        'glass': '24px',
-        'glass-strong': '40px',
+      backgroundImage: {
+        'glassmorphism': 'none',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
-        'shimmer': 'shimmer 3s ease-in-out infinite',
-        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
-        'twinkle': 'star-twinkle 3s ease-in-out infinite',
-        'petal-fall': 'petal-fall 8s ease-in-out infinite',
-        'gold-sparkle': 'gold-sparkle 2s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
       },
     },
   },

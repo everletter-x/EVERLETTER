@@ -1,239 +1,194 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Head from 'next/head';
-import { motion, AnimatePresence } from 'framer-motion';
-import { BaseLayout, GlassCard } from '../everletter/shared/components/BaseLayout';
 
 const products = [
   {
     id: 'bloom',
     name: 'Bloom',
     tier: 'Premium',
-    tagline: 'Hitungan mundur menuju kejutan.',
-    desc: 'Membangun antisipasi lewat countdown 3-2-1 sebelum halaman utama terungkap. Momen yang terasa seperti event — dan gampang di-viral-kan di TikTok.',
-    price: 'Rp 60.000',
-    color: 'from-rose/20 to-pink-soft/20',
-    accent: 'rose',
-    href: 'https://premium1everletter.vercel.app',
+    mechanic: 'Loading → 3-2-1 countdown → main page reveal',
+    bestFor: 'Birthday, surprise, anniversary',
+    emoji: '🌸',
+    color: 'from-pink-soft to-rose',
+    url: 'https://premium1everletter.vercel.app',
   },
   {
     id: 'nocturne',
     name: 'Nocturne',
     tier: 'Premium',
-    tagline: 'Buka hadiahnya, rasakan kejutannya.',
-    desc: 'Kotak hadiah interaktif yang diklik untuk membuka. Sederhana dipahami, tapi menghasilkan momen emosional yang kuat saat terungkap.',
-    price: 'Rp 60.000',
-    color: 'from-lavender/20 to-rose/10',
-    accent: 'lavender',
-    href: 'https://premium2everletter.vercel.app',
+    mechanic: 'Animated gift box → click to open → reveal',
+    bestFor: 'Birthday, apology, confession',
+    emoji: '🎁',
+    color: 'from-lavender to-pink-soft',
+    url: 'https://premium2everletter.vercel.app',
   },
   {
     id: 'eterna',
     name: 'Eterna',
     tier: 'Premium',
-    tagline: 'Surat cinta yang mengalir tanpa akhir.',
-    desc: 'Paling fleksibel untuk copywriting panjang. Scroll bertahap memberikan pengalaman intimate dan personal — terasa seperti dibacakan langsung.',
-    price: 'Rp 60.000',
-    color: 'from-gold/20 to-starlight/10',
-    accent: 'gold',
-    href: 'https://premium3everletter.vercel.app',
+    mechanic: 'Scroll-reveal sections appearing one by one',
+    bestFor: 'Anniversary, romantic appreciation',
+    emoji: '💌',
+    color: 'from-rose to-warm-white',
+    url: 'https://premium3everletter.vercel.app',
   },
   {
     id: 'heartverse',
-    name: 'Heartverse',
+    name: 'HeartVerse',
     tier: 'Premium',
-    tagline: 'Setiap foto punya cerita.',
-    desc: 'Photo-driven dan gampang dijual. Cocok untuk customer yang ingin foto sebagai pusat pengalaman — setiap gambar punya caption dan makna.',
-    price: 'Rp 60.000',
-    color: 'from-lavender/20 to-rose/20',
-    accent: 'lavender',
-    href: 'https://premium4everletter.vercel.app',
+    mechanic: 'Photo carousel with captions → final wish',
+    bestFor: 'Photo-driven memories, couples',
+    emoji: '📸',
+    color: 'from-warm-white to-pink-soft',
+    url: 'https://premium4everletter.vercel.app',
   },
   {
-    id: 'cinematic',
+    id: 'cinematic-letter',
     name: 'Cinematic Letter',
     tier: 'Ultra Premium',
-    tagline: 'Pengalaman sinematik untuk seseorang yang mengubah hidupmu.',
-    desc: 'Paling "wah". Intro sinematik → chapter scrolling → foto + musik → surat panjang → ending scene. Pengalaman mewah yang mudah dibedakan dari Premium.',
-    price: 'Rp 70.000',
-    color: 'from-gold/20 to-gold-light/10',
-    accent: 'gold',
-    href: 'https://ultra1everletter.vercel.app',
+    mechanic: 'Chapter-based cinematic scroll with music',
+    bestFor: 'Premium anniversary, serious confession',
+    emoji: '🎬',
+    color: 'from-dark-luxury to-gold-accent',
+    url: 'https://ultra1everletter.vercel.app',
   },
   {
-    id: 'signature',
+    id: 'signature-memory',
     name: 'Signature Memory',
     tier: 'Ultra Premium',
-    tagline: 'Sepenuhnya custom. Sepenuhnya untukmu.',
-    desc: 'Custom premium tanpa batas. Bisa dipakai untuk momen apa pun — proposal, wedding, graduation, atau cerita personal. Flagship tier.',
-    price: 'Rp 70.000',
-    color: 'from-gold/30 to-starlight/10',
-    accent: 'gold',
-    href: 'https://ultra2everletter.vercel.app',
+    mechanic: 'Fully custom layout, customer-request based',
+    bestFor: 'Special requests, unique themes',
+    emoji: '✨',
+    color: 'from-gold-accent to-dark-luxury',
+    url: 'https://ultra2everletter.vercel.app',
   },
 ];
 
-const testimonials = [
-  {
-    name: 'Anisa R.',
-    location: 'Jakarta',
-    text: 'Pacarku nangis pas buka halaman ini. Dia bilang ini hadiah paling berkesan yang pernah dia terima. Worth every rupiah.',
-    product: 'Bloom',
-    rating: 5,
-  },
-  {
-    name: 'Dimas P.',
-    location: 'Bandung',
-    text: 'Kirain bakal biasa aja, ternyata hasilnya premium banget. Temen-temen cewekku langsung pada mau juga.',
-    product: 'Nocturne',
-    rating: 5,
-  },
-  {
-    name: 'Rafi A.',
-    location: 'Surabaya',
-    text: 'Udah 3 kali order buat anniversary. Setiap tahun pakai template berbeda, dan hasilnya selalu bikin istriku terharu.',
-    product: 'Eterna',
-    rating: 5,
-  },
-  {
-    name: 'Keisha M.',
-    location: 'Yogyakarta',
-    text: 'Aku kira cuma website biasa, tapi ternyata ada countdown-nya, ada fotonya, ada pesan panjang. Bener-bener kayak experience.',
-    product: 'Bloom',
-    rating: 5,
-  },
-  {
-    name: 'Fadhil R.',
-    location: 'Medan',
-    text: 'Yang cinematic letter itu beda level. Pacarku bilang kayak nonton film pendek tentang hubungan kami. Speechless.',
-    product: 'Cinematic Letter',
-    rating: 5,
-  },
-  {
-    name: 'Laras W.',
-    location: 'Semarang',
-    text: 'Pesen Signature Memory buat proposal suami. Dia sampai bilang ini lebih berkesan dari cincinnya. Nangis bareng kami.',
-    product: 'Signature Memory',
-    rating: 5,
-  },
-];
-
-function StarRating({ count }: { count: number }) {
-  return (
-    <div className="flex gap-1">
-      {Array.from({ length: count }).map((_, i) => (
-        <svg key={i} className="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-function TestimonialCarousel() {
-  const [current, setCurrent] = useState(0);
-
+function use3DTilt(ref: React.RefObject<HTMLElement | null>, strength: number = 10) {
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <div className="relative">
-      <div className="overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-          >
-            <div className="glass-card p-8 sm:p-10">
-              <StarRating count={testimonials[current].rating} />
-              <p className="mt-5 text-elegant-white/90 text-lg leading-relaxed font-light italic">
-                &ldquo;{testimonials[current].text}&rdquo;
-              </p>
-              <div className="mt-6 flex items-center justify-between">
-                <div>
-                  <p className="text-elegant-white font-medium">{testimonials[current].name}</p>
-                  <p className="text-elegant-white/50 text-sm">{testimonials[current].location} · {testimonials[current].product}</p>
-                </div>
-                <span className="glass-subtle px-3 py-1 text-xs text-gold font-medium">Verified</span>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Dots */}
-      <div className="flex justify-center gap-2 mt-6">
-        {testimonials.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === current ? 'w-8 bg-gold' : 'w-1.5 bg-white/20 hover:bg-white/40'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
+    const el = ref.current;
+    if (!el) return;
+    const handleMouse = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      el.style.transform =
+        `perspective(800px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg)`;
+    };
+    const handleLeave = () => {
+      el.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
+    };
+    el.addEventListener('mousemove', handleMouse);
+    el.addEventListener('mouseleave', handleLeave);
+    return () => {
+      el.removeEventListener('mousemove', handleMouse);
+      el.removeEventListener('mouseleave', handleLeave);
+    };
+  }, [ref, strength]);
 }
 
-export default function HomePage() {
+export default function Landing() {
+  const [demoProduct, setDemoProduct] = useState<typeof products[0] | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 500], [0, 150]);
+  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const bgY1 = useTransform(scrollY, [0, 500], [0, -80]);
+  const bgY2 = useTransform(scrollY, [0, 500], [0, -150]);
+
   return (
-    <BaseLayout>
+    <>
       <Head>
-        <title>EverLetter — Turn Feelings Into Memories</title>
-        <meta name="description" content="Hadiah digital emosional yang mengubah perasaan menjadi kenangan. Template premium untuk pasangan, ulang tahun, anniversary, dan momen spesial." />
+        <title>EverLetter - Turn Feelings Into Memories</title>
+        <meta name="description" content="Emotional digital gifts that turn feelings into memories. Personalized messages, photos, and moments crafted into beautiful digital experiences." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="EverLetter - Turn Feelings Into Memories" />
+        <meta property="og:description" content="Emotional digital gifts that turn feelings into memories. Personalized messages, photos, and moments crafted into beautiful digital experiences." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://everletter.vercel.app" />
+        <meta property="og:image" content="https://everletter.vercel.app/og-image.png" />
+        <meta property="og:site_name" content="EverLetter" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="EverLetter - Turn Feelings Into Memories" />
+        <meta name="twitter:description" content="Emotional digital gifts that turn feelings into memories. Personalized messages, photos, and moments crafted into beautiful digital experiences." />
+        <meta name="twitter:image" content="https://everletter.vercel.app/og-image.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </Head>
 
-      {/* ── Hero ── */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-5">
-        <div className="text-center max-w-3xl mx-auto">
+      {/* Hero Section with 3D Parallax */}
+      <section className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+        {/* Parallax background layers — moving at different speeds */}
+        <motion.div className="absolute inset-0 overflow-hidden" style={{ y: bgY1 }}>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold-accent/5 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        </motion.div>
+        <motion.div className="absolute inset-0 overflow-hidden" style={{ y: bgY2 }}>
+          <div className="absolute top-1/2 left-[10%] w-48 h-48 bg-gold-accent/3 rounded-full blur-2xl" />
+          <div className="absolute top-[20%] right-[15%] w-64 h-64 bg-rose/3 rounded-full blur-2xl" />
+          <div className="absolute bottom-[30%] left-[30%] w-40 h-40 bg-starlight-glow/3 rounded-full blur-2xl" />
+        </motion.div>
+
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="text-center relative z-10"
+          ref={heroRef}
+        >
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-8"
           >
-            <p className="text-gold/80 text-sm font-medium tracking-[0.3em] uppercase mb-6">Emotional Digital Gifts</p>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-balance leading-tight">
-              Turn Feelings Into{' '}
-              <span className="gold-gradient">Memories</span>
-            </h1>
-            <p className="mt-6 text-elegant-white/60 text-lg sm:text-xl font-light leading-relaxed max-w-xl mx-auto">
-              Buat ucapan yang terasa lebih spesial daripada chat biasa. Personal, sinematik, dan tak terlupakan.
-            </p>
+            <span className="text-6xl md:text-8xl inline-block transition-transform duration-200" style={{ transformStyle: 'preserve-3d' }}>💌</span>
           </motion.div>
 
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6" style={{ transformStyle: 'preserve-3d' }}>
+            <span className="gold-gradient">EverLetter</span>
+          </h1>
+
+          <p className="text-xl md:text-2xl text-elegant-white/70 mb-4 font-light" style={{ transformStyle: 'preserve-3d' }}>
+            Turn Feelings Into Memories
+          </p>
+
+          <p className="text-base md:text-lg text-elegant-white/50 max-w-xl mx-auto mb-12" style={{ transformStyle: 'preserve-3d' }}>
+            Buat ucapan yang terasa lebih spesial daripada chat biasa.
+            <br />
+            Emotional digital gifts crafted with love.
+          </p>
+
+          <motion.a
+            href="#products"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-block px-8 py-4 bg-gold-accent text-dark-luxury font-semibold rounded-full hover:bg-gold-accent/90 transition-colors"
+            aria-label="Scroll to view template options"
+          >
+            Lihat Template
+          </motion.a>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-6 h-10 border-2 border-elegant-white/30 rounded-full flex justify-center"
           >
-            <a href="#premium" className="glass-card px-8 py-4 text-center text-elegant-white font-medium card-hover">
-              Lihat Koleksi
-            </a>
-
+            <div className="w-1.5 h-3 bg-gold-accent rounded-full mt-2" />
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="mt-8 text-elegant-white/30 text-xs"
-          >
-            1.200+ hadiah terkirim · 4.9/5 rating · Respons 15 menit
-          </motion.p>
-        </div>
+        </motion.div>
       </section>
 
-      {/* ── Premium Products ── */}
-      <section id="premium" className="px-5 py-20">
+      {/* Products Section */}
+      <section id="products" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -241,95 +196,43 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <p className="text-rose/80 text-xs font-medium tracking-[0.3em] uppercase mb-3">Premium Collection</p>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold">Pilih Template, Kirim Perasaan</h2>
-            <p className="mt-4 text-elegant-white/50 max-w-lg mx-auto">
-              Empat design premium yang dirancang untuk membuat seseorang merasa spesial.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {products.filter(p => p.tier === 'Premium').map((product, i) => (
-              <GlassCard key={product.id} delay={i * 0.1} className="p-8">
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-5`}>
-                  <span className="text-lg font-bold text-elegant-white">{product.name[0]}</span>
-                </div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-xl font-semibold text-elegant-white">{product.name}</h3>
-                  <span className="glass-subtle px-2 py-0.5 text-[10px] text-elegant-white/60 font-medium uppercase tracking-wider">Premium</span>
-                </div>
-                <p className="text-elegant-white/70 text-sm mb-4 leading-relaxed">{product.desc}</p>                  <div className="flex items-center justify-between mb-4">
-                  <span className="text-gold font-semibold">{product.price}</span>
-                  <a href={product.href} target="_blank" rel="noopener noreferrer" className="glass-subtle px-4 py-2 text-sm text-elegant-white/80 hover:text-elegant-white card-hover">
-                    Lihat Demo →
-                  </a>
-                </div>
-
-              </GlassCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Ultra Premium ── */}
-      <section className="px-5 py-20">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <p className="text-gold/80 text-xs font-medium tracking-[0.3em] uppercase mb-3">Ultra Premium</p>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold">
-              Pengalaman <span className="gold-gradient">Tanpa Batas</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Pilih <span className="gold-gradient">Template</span>
             </h2>
-            <p className="mt-4 text-elegant-white/50 max-w-lg mx-auto">
-              Untuk momen yang terlalu penting untuk dibuat biasa saja. Sinematik, custom, dan sepenuhnya personal.
+            <p className="text-elegant-white/60 max-w-lg mx-auto">
+              Setiap template dirancang untuk memberikan pengalaman emosional yang berbeda.
+              Pilih yang paling cocok untuk perasaanmu.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {products.filter(p => p.tier === 'Ultra Premium').map((product, i) => (
-              <GlassCard key={product.id} delay={i * 0.15} className="p-8 sm:p-10">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-6`}>
-                  <span className="text-xl font-bold text-elegant-white">{product.name[0]}</span>
-                </div>
-                <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-2xl font-semibold text-elegant-white">{product.name}</h3>
-                  <span className="glass-subtle px-2.5 py-0.5 text-[10px] text-gold font-medium uppercase tracking-wider">Ultra Premium</span>
-                </div>
-                <p className="text-elegant-white/70 mb-5 leading-relaxed">{product.desc}</p>                  <div className="flex items-center justify-between mb-5">
-                  <span className="text-gold font-semibold text-lg">{product.price}</span>
-                  <a href={product.href} target="_blank" rel="noopener noreferrer" className="glass-subtle px-5 py-2.5 text-sm text-gold hover:text-gold-light card-hover">
-                    Lihat Demo →
-                  </a>
-                </div>
+          {/* Premium Products */}
+          <div className="mb-16">
+            <h3 className="text-xl font-semibold text-gold-accent mb-8 text-center">
+              Premium Templates
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.filter(p => p.tier === 'Premium').map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} onDemoClick={setDemoProduct} />
+              ))}
+            </div>
+          </div>
 
-              </GlassCard>
-            ))}
+          {/* Ultra Premium Products */}
+          <div>
+            <h3 className="text-xl font-semibold text-gold-accent mb-8 text-center">
+              Ultra Premium Templates
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {products.filter(p => p.tier === 'Ultra Premium').map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index + 4} onDemoClick={setDemoProduct} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
-      <section className="px-5 py-20">
-        <div className="max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <p className="text-gold/80 text-xs font-medium tracking-[0.3em] uppercase mb-3">Kata Mereka</p>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold">Cerita dari yang Sudah Merasakan</h2>
-          </motion.div>
-          <TestimonialCarousel />
-        </div>
-      </section>
-
-      {/* ── How It Works ── */}
-      <section className="px-5 py-20">
+      {/* How It Works */}
+      <section className="py-20 px-4 bg-dark-luxury/50">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -337,34 +240,175 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="font-display text-3xl sm:text-4xl font-bold">Cara Pesan</h2>
-            <p className="mt-4 text-elegant-white/50">Selesai dalam 15–60 menit. Simple, cepat, dan personal.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Cara <span className="gold-gradient">Pesan</span>
+            </h2>
+            <p className="text-elegant-white/60">
+              Hanya butuh 3 langkah untuk memberikan hadiah digital yang berkesan.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: '01', title: 'Pilih Design', desc: 'Lihat demo, pilih yang paling cocok untuk momenmu.' },
-              { step: '02', title: 'Kirim Data', desc: 'Nama, foto, pesan — kirim ke kami. Kami yang atur.' },
-              { step: '03', title: 'Terima Link', desc: 'Dalam 15–60 menit, link siap dikirim ke orang spesial.' },
-            ].map((item, i) => (
-              <GlassCard key={item.step} delay={i * 0.12} className="p-8 text-center">
-                <span className="text-gold/40 text-4xl font-bold">{item.step}</span>
-                <h3 className="mt-4 text-lg font-semibold text-elegant-white">{item.title}</h3>
-                <p className="mt-2 text-elegant-white/60 text-sm">{item.desc}</p>
-              </GlassCard>
+              { step: '1', title: 'Pilih Template', desc: 'Pilih template yang paling cocok untuk momen spesialmu.' },
+              { step: '2', title: 'Kirim Data', desc: 'Kirim nama, foto, dan pesan personal melalui WhatsApp.' },
+              { step: '3', title: 'Terima Link', desc: 'Dalam 15-60 menit, hadiah digital siap dikirim.' },
+            ].map((item, index) => (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 rounded-full bg-gold-accent/10 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-gold-accent">{item.step}</span>
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                <p className="text-elegant-white/60 text-sm">{item.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="px-5 py-12 border-t border-white/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="font-display text-xl font-semibold gold-gradient inline-block">EverLetter</p>
-          <p className="mt-3 text-elegant-white/40 text-sm">Turn Feelings Into Memories</p>
-          <p className="mt-6 text-elegant-white/20 text-xs">© 2026 EverLetter. Semua hadiah dibuat dengan sepenuh hati.</p>
+      {/* CTA Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Siap Memberikan <span className="gold-gradient">Hadiah Spesial</span>?
+            </h2>
+            <p className="text-elegant-white/60 mb-8">
+              Hubungi kami melalui WhatsApp untuk memesan hadiah digitalmu sekarang.
+            </p>
+            <a
+              href="https://wa.me/6282320114535?text=Halo,%20saya%20ingin%20memesan%20EverLetter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 transition-colors"
+              aria-label="Order via WhatsApp"
+            >
+              Pesan via WhatsApp
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Demo Preview Modal */}
+      <AnimatePresence>
+        {demoProduct && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setDemoProduct(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-4xl h-[80vh] bg-dark-luxury rounded-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="absolute top-4 right-4 z-10">
+                <button
+                  onClick={() => setDemoProduct(null)}
+                  className="w-10 h-10 rounded-full bg-elegant-white/10 flex items-center justify-center hover:bg-elegant-white/20 transition-colors"
+                  aria-label="Close demo preview"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="absolute top-4 left-4 z-10">
+                <span className="px-3 py-1 bg-gold-accent text-dark-luxury text-sm font-semibold rounded-full">
+                  Demo Preview - {demoProduct.name}
+                </span>
+              </div>
+              <iframe
+                src={demoProduct.url}
+                className="w-full h-full border-0"
+                title={`Demo preview of ${demoProduct.name}`}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Footer */}
+      <footer className="py-8 px-4 border-t border-elegant-white/10">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-elegant-white/40 text-sm">
+            &copy; 2026 EverLetter. Turn Feelings Into Memories.
+          </p>
         </div>
       </footer>
-    </BaseLayout>
+    </>
+  );
+}
+
+function ProductCard({ product, index, onDemoClick }: { product: typeof products[0]; index: number; onDemoClick: (product: typeof products[0]) => void }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  use3DTilt(cardRef, 6);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+    >
+      <div ref={cardRef} className="block glass rounded-2xl p-6 card-hover group relative" style={{ transformStyle: 'preserve-3d', transition: 'transform 0.1s ease-out' }}>
+        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+          <span className="text-2xl">{product.emoji}</span>
+        </div>
+
+        <div className="mb-2">
+          <span className="text-xs font-medium text-gold-accent uppercase tracking-wider">
+            {product.tier}
+          </span>
+        </div>
+
+        <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+
+        <p className="text-elegant-white/50 text-sm mb-3">
+          {product.mechanic}
+        </p>
+
+        <p className="text-elegant-white/40 text-xs mb-3">
+          Cocok untuk: {product.bestFor}
+        </p>
+
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => onDemoClick(product)}
+            className="flex items-center text-gold-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity hover:text-gold-accent/80"
+            aria-label={`View demo preview of ${product.name}`}
+          >
+            Lihat Demo
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <a
+            href={product.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-elegant-white/50 text-xs hover:text-elegant-white/70 transition-colors"
+            aria-label={`Open ${product.name} live demo in new tab`}
+          >
+            Buka Live Demo
+          </a>
+        </div>
+      </div>
+    </motion.div>
   );
 }
